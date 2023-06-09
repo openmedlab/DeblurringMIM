@@ -1,13 +1,17 @@
 
-### Deblurring Masked Autoencoder is Better Recipe for Ultrasound Image Recognition
+### Deblurring Masked Image Modelling is Better Recipe for Ultrasound Image Analysis
 
 ### Introduction
-This is an official implementation of the paper Deblurring Masked Autoencoder is Better Recipe for Ultrasound Image Recognition.
-- We propose a novel deblurring MIM approach that incorporates deblurring into the proxy task during MIM pretraining. The deblurring MIM can be seamless integrated with MIM approaches ([MAE](https://openaccess.thecvf.com/content/CVPR2022/papers/He_Masked_Autoencoders_Are_Scalable_Vision_Learners_CVPR_2022_paper.pdf), [ConvMAE](https://arxiv.org/pdf/2205.03892.pdf))
+Our initial paper is presented in [Deblurring Masked Autoencoder is Better Recipe for Ultrasound Image Recognition]().
+
+Compared with the initial version which propose a novel deblurring MAE for ultrasound image recognition, this repository is an extension which has the following features:
+- We propose a novel deblurring MIM approach that incorporates deblurring into the proxy task during MIM pretraining. The deblurring MIM can be seamless integrated with MIM approaches (such as [MAE](https://openaccess.thecvf.com/content/CVPR2022/papers/He_Masked_Autoencoders_Are_Scalable_Vision_Learners_CVPR_2022_paper.pdf), [ConvMAE](https://arxiv.org/pdf/2205.03892.pdf)).
 - We utilize 280,000 thyroid images for the pretraining.
 - Support downstram classification and segmentation tasks.
 
-*This work is still working in progress, we will release our extended paper soon.*
+*Note that in the initial version we only integrated our deblurring with MAE and only support classification task. The corresponding extended paper was still working in progress and we will release it soon.*
+
+
 ### Method
 ![tenser](figure/main.drawio.png)
 

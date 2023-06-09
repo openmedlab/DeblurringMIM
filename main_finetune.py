@@ -25,20 +25,15 @@ from timm.models.layers import trunc_normal_
 from timm.data.mixup import Mixup
 from timm.loss import LabelSmoothingCrossEntropy, SoftTargetCrossEntropy
 
-import util.lr_decay as lrd
 import util.misc as misc
 from util.datasets import build_dataset, build_dataset_test
-from util.pos_embed import interpolate_pos_embed
 from util.misc import NativeScalerWithGradNormCount as NativeScaler
 
-import models_convvit
-import models_vit
+from model import models_vit, models_convvit
 
 from engine_finetune import train_one_epoch, evaluate, evaluate_test
 
-from sklearn.metrics import f1_score, jaccard_score, accuracy_score,\
-    classification_report, precision_score, recall_score
-import copy    
+import copy
     
 def get_args_parser():
     parser = argparse.ArgumentParser('ConvMAE fine-tuning for image classification', add_help=False)
@@ -360,15 +355,20 @@ def main(args):
         if (epoch - max_epoch > args.early_stops and max_epoch != -1):
             test_stats = evaluate(data_loader_test, model_best, device)
             print(f"Accuracy of the network on the {len(dataset_test)} test images: {test_stats['acc1']:.1f}%")
-            acc, f1, cls_report, auroc = evaluate_test(dataset_test, model_best, device)
+            acc, f1, precision, recall, cls_report, auroc = evaluate_test(dataset_test, model_best, device)
             print ("Acc:", acc*100)
             print ("F1:", f1*100)
+            print (cls_report)
             
             with open(os.path.join(args.output_dir, "result.txt"), mode="a+", encoding="utf-8") as f:
+                f.writelines("---"*10+"\n")
                 f.writelines("Acc:" + str(acc*100) + "\n")
                 f.writelines("F1:" + str( f1*100) + "\n")
-                f.writelines("auroc:" + str(auroc) + "\n")
+                f.writelines("precision:" + str(precision*100) + "\n")
+                f.writelines("recall:" + str(recall*100) + "\n")
+                f.writelines("auroc:" + str(auroc*100) + "\n")
                 f.writelines(cls_report + "\n")
+                f.writelines("---"*10)
             exit(0)
         if args.distributed:
             data_loader_train.sampler.set_epoch(epoch)

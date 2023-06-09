@@ -19,24 +19,17 @@ from torch.utils.tensorboard import SummaryWriter
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
-import timm
-
 #assert timm.__version__ == "0.3.2"  # version check
 import timm.optim.optim_factory as optim_factory
 
 import util.misc as misc
 from util.misc import NativeScalerWithGradNormCount as NativeScaler
 
-import models_convmae
-import models_dconvmae
-
-import models_mae
-import models_dmae
-
+from model import models_dconvmae, models_convmae, models_mae, models_dmae
 
 from engine_pretrain import train_one_epoch, evaluate_pretrain, \
     train_one_epoch_corrupt, evaluate_pretrain_corrupt
-from dataset_us import CorruptDataset
+from util.dataset_us import CorruptDataset
 
 def get_args_parser():
     parser = argparse.ArgumentParser('ConvMAE pre-training', add_help=False)

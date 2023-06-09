@@ -1,42 +1,230 @@
 
 ### Deblurring Masked Autoencoder is Better Recipe for Ultrasound Image Recognition
 
+### Introduction
+This is an official implementation of the paper Deblurring Masked Autoencoder is Better Recipe for Ultrasound Image Recognition.
+- We propose a novel deblurring MIM approach that incorporates deblurring into the proxy task during MIM pretraining. The deblurring MIM can be seamless integrated with MIM approaches ([MAE](https://openaccess.thecvf.com/content/CVPR2022/papers/He_Masked_Autoencoders_Are_Scalable_Vision_Learners_CVPR_2022_paper.pdf), [ConvMAE](https://arxiv.org/pdf/2205.03892.pdf))
+- We utilize 280,000 thyroid images for the pretraining.
+- Support downstram classification and segmentation tasks.
 
-This is an official implementation of the paper Deblurring Masked Autoencoder is Better Recipe for Ultrasound Image Recognition
-
-### Abstract
-Masked autoencoder (MAE) has attracted unprecedented attention and achieves remarkable performance in many vision tasks. It reconstructs random masked image patches (known as proxy task) during pretraining and learns meaningful semantic representations that can be transferred to downstream tasks. However, MAE has not been thoroughly explored in ultrasound imaging. In this work, we investigate the potential of MAE for ultrasound image recognition. Motivated by the unique property of ultrasound imaging in high noise-to-signal ratio, we propose a novel deblurring MAE approach that incorporates deblurring into the proxy task during pretraining. The addition of deblurring facilitates the pretraining to better recover the subtle details presented in the ultrasound images, thus improving the performance of the downstream classification task. Our experimental results demonstrate the effectiveness of our deblurring MAE, achieving state-of-the-art performance in ultrasound image classification. Overall, our work highlights the potential of MAE for ultrasound image recognition and presents a novel approach that incorporates deblurring to further improve its effectiveness. 
-
+*This work is still working in progress, we will release our extended paper soon.*
 ### Method
 ![tenser](figure/main.drawio.png)
 
 ### Pre-trained checkpoints
-We use 280,000 thyroid ultrasound images for the pretraining. The following table provides the pre-trained checkpoints:
+The pre-trained models including our proposed deblurring (Deblurring MAE and Deblurring ConvMAE), as well as the vanilla MAE and ConvMAE. All models are pretrained with thyroid ultrasound images.
+The following table provides the pre-trained checkpoints:
 
 <table><tbody>
 <!-- START TABLE -->
 <!-- TABLE HEADER -->
 <th valign="bottom"></th>
-<th valign="bottom">ViT-Base</th>
-<th valign="bottom">ViT-Large</th>
-<th valign="bottom">ViT-Huge</th>
+<th valign="bottom">MAE(Base)</th>
+<th valign="bottom">ConvMAE(Base)</th>
+
 <!-- TABLE BODY -->
-<tr><td align="left">pre-trained checkpoint</td>
-<td align="center"><a href="https://dl.fbaipublicfiles.com/mae/pretrain/mae_pretrain_vit_base.pth">download</a></td>
-<td align="center"><a href="https://dl.fbaipublicfiles.com/mae/pretrain/mae_pretrain_vit_large.pth">download</a></td>
-<td align="center"><a href="https://dl.fbaipublicfiles.com/mae/pretrain/mae_pretrain_vit_huge.pth">download</a></td>
+<tr><td align="left">Deblurring</td>
+<td align="center"><a href="https://drive.google.com/file/d/1cOmi7OaqPSMrds7gVZfzTrv8ftEWIH_u/view?usp=drive_link">download</a></td>
+<td align="center"><a href="https://drive.google.com/file/d/19PdQpkOOEAi-4aJvVnwB2JTyP-KKa5pp/view?usp=drive_link">download</a></td>
 </tr>
-<tr><td align="left">md5</td>
-<td align="center"><tt>8cad7c</tt></td>
-<td align="center"><tt>b8b06e</tt></td>
-<td align="center"><tt>9bdbb0</tt></td>
+<tr><td align="left">Vanilla</td>
+<td align="center"><a href="https://drive.google.com/file/d/1bXcf6A0kQccnpe3Tk2l0-xWl5HSe4fJ2/view?usp=drive_link">download</a></td>
+<td align="center"><a href="https://drive.google.com/file/d/1Tv9yjWM9sqxmd60GEIT3WwnT3CHt0kjg/view?usp=drive_link">download</a></td>
 </tr>
 </tbody></table>
 
+
+
+### installation
+- Clone this repo:
+
+```bash
+git clone https://github.com/MembrAI/DeblurringMAE
+cd DeblurringMAE
+```
+
+- Create a conda environment and activate it:
+```bash
+conda create -n deblurringmae python=3.7
+conda activate deblurringmae
+```
+
+- Install `Pytorch==1.8.0` and `torchvision==0.9.0` with `CUDA==11.1`
+
+```bash
+conda install pytorch==1.8.0 torchvision==0.9.0 cudatoolkit=11.1 -c pytorch -c conda-forge
+```
+
+- Install `timm==0.3.2`
+
+```bash
+pip install timm==0.3.2
+```
+
+### Pretraining
+
+#### Data preparation
+Prepareing the original dataset follow this format:
+```tree data
+dataset_orig
+  ├── train
+      ├── class1
+      │   ├── img1.png
+      │   ├── img2.png
+      │   └── ...
+      ├── class2
+      │   ├── img3.png
+      │   └── ...
+      └── ...
+  ├── val
+      ├── class1
+      │   ├── img4.png
+      │   ├── img5.png
+      │   └── ...
+      ├── class2
+      │   ├── img6.png
+      │   └── ...
+      └── ...
+```
+For deblurring pretraining, you also need to apply image blurring operation on the original dataset to prepare blurred dataset:
+```bash 
+python blurred_images.py --src_dir /path/to/dataset_orig/ --dst_dir /path/to/dataset_blurred/ \
+     --method gaussian --sigma 1.1
+```
+
+#### Running Pretraining Scripts
+To pretrain the deblurring MAE, run the following on 1 nodes with 8 GPUs each:
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7,8 torchrun --nproc_per_node=8 --nnodes=1 --node_rank=0 main_pretrain.py \
+--model dmae_vit_base_patch16 --output /path/to/saved/weights/ \
+--data_path_blurred /path/to/dataset_blurred/ \
+--data_path_orig /path/to/dataset_orig/ --batch_size 32
+```
+
+To pretrain the deblurring ConvMAE, run the following on 1 nodes with 8 GPUs each:
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7,8 torchrun --nproc_per_node=8 --nnodes=1 --node_rank=0 main_pretrain.py \
+--model dconvmae_convvit_base_patch16 --output /path/to/saved/weights/ \
+--data_path_blurred /path/to/dataset_blurred/ \
+--data_path_orig /path/to/dataset_orig/ --batch_size 32
+```
+
+To pretrain the vanilla MAE, run the following on 1 nodes with 8 GPUs each:
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7,8 torchrun --nproc_per_node=8 --nnodes=1 --node_rank=0 main_pretrain.py \
+--model mae_vit_base_patch16 --output /path/to/saved/weights/ \
+--data_path_blurred /path/to/dataset_orig/ \
+--data_path_orig /path/to/dataset_orig/ --batch_size 32
+```
+
+
+To pretrain the vanilla ConvMAE, run the following on 1 nodes with 8 GPUs each:
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7,8 torchrun --nproc_per_node=8 --nnodes=1 --node_rank=0 main_pretrain.py \
+--model convmae_convvit_base_patch16 --output /path/to/saved/weights/ \
+--data_path_blurred /path/to/dataset_orig/ \
+--data_path_orig /path/to/dataset_orig/ --batch_size 32
+```
+
+
 ### Fine-tuning for classification
+#### Data preparation
+Preparing the dataset for classification follow this format:
+```tree data
+dataset
+  ├── train
+  │   ├── class1
+  │   │   ├── img1.png
+  │   │   ├── img2.png
+  │   │   └── ...
+  │   ├── class2
+  │   │   ├── img3.png
+  │   │   └── ...
+  │   └── ...
+  └── val
+  │   ├── class1
+  │   │   ├── img4.png
+  │   │   ├── img5.png
+  │   │   └── ...
+  │   ├── class2
+  │   │   ├── img6.png
+  │   │   └── ...
+  │   └── ...
+  └── test
+      ├── class1
+      │   ├── img7.png
+      │   ├── img8.png
+      │   └── ...
+      ├── class2
+      │   ├── img9.png
+      │   └── ...
+      └── ...
+```
+Note that for fine-tuning the deblurring MIM approaches, you should also need to apply image blurring operation on the original images.
+
+#### Training for classification
+To finetune deblurring MAE or vanilla MAE training for classification, run the following on single GPU:
+```bash
+python main_finetune.py --seed 0 \
+    --data_path  /path/to/dataset/  \
+    --output_dir /path/to/saved/weights/ \
+    --model vit_base_patch16 --finetune ${PRETRAIN_CHKPT} \
+    --blr 1e-4 --batch_size 256
+```
+You can change the model parameter for deblurring ConvMAE or  vanilla ConvMAE.
+#### Evaluation for classification
+To evaluate the fine-tuned deblurring MAE or vanilla MAE for classification, run the following on single GPU:
+```bash
+python main_finetune.py --batch_size 256  \
+--model vit_base_patch16 \
+--data_path /path/to/dataset/ --nb_classes 2 \
+--output_dir  /path/to/save/results/ \
+--resume ${FINETUNE_CHKPT} --eval 
+```
 
 ### Fine-tuning for segmentation
+Please follow the [segmentation guide of ConvMAE](https://github.com/Alpha-VL/ConvMAE/blob/main/SEG/SEGMENTATION.md) to configure the environment.
 
+#### Data preparation
+Please follow the guide in [mmseg](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md) to prepare the segmentation dataset. Note that for fine-tuning the deblurring MIM approaches, you should also apply image blurring operation on the original images.
+
+#### Training for segmentation
+Download the pretrained deblurring ConvMAE model [here](https://drive.google.com/file/d/19PdQpkOOEAi-4aJvVnwB2JTyP-KKa5pp/view?usp=drive_link).
+
+```bash
+./tools/dist_train.sh <CONFIG_PATH> <NUM_GPUS>  --work-dir <SAVE_PATH> --options model.pretrained=<PRETRAINED_MODEL_PATH>
+```
+
+For example:
+```bash
+./tools/dist_train.sh \
+    configs/de_convmae/upernet_de_convmae_us280k_base_gaussian_800_512_tn3k.py 8 \
+    --work-dir /path/to/save \
+    --options model.pretrained=/path/to/pretrained/weights
+```
+#### Evaluation for segmentation
+```
+./tools/dist_test.sh  <CONFIG_PATH> <CHECKPOINT_PATH> <NUM_GPUS> --eval mIoU
+```
+We provide the fine-tuned checkpoint [here]() tuned on the [TN3K dataset](https://drive.google.com/file/d/1reHyY5eTZ5uePXMVMzFOq5j3eFOSp50F/view?usp=sharing).
+Run 
+```
+./tools/dist_test.sh configs/de_convmae/upernet_de_convmae_us280k_base_gaussian_800_512_tn3k.py /path/to/finetuned/weights 8 --eval mIoU
+```
+
+This should give
+```
++------------+-------+-------+
+|   Class    |  IoU  |  Acc  |
++------------+-------+-------+
+| background | 96.29 | 98.32 |
+|   nodule   | 77.31 | 85.94 |
++------------+-------+-------+
+```
 
 ### Acknowledgement
 The pretraining and finetuning of our project are based on [MAE](https://github.com/facebookresearch/mae) and [ConvMAE](https://github.com/Alpha-VL/ConvMAE). The segmentation part are based on [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) and [mae_segmentation](https://github.com/implus/mae_segmentation). Thanks for their wonderful work.

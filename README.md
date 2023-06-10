@@ -4,19 +4,19 @@
 ### Introduction
 Our initial paper is presented in [Deblurring Masked Autoencoder is Better Recipe for Ultrasound Image Recognition]().
 
-Compared with the initial version which propose a novel deblurring MAE for ultrasound image recognition, this repository is an extension which has the following features:
-- We propose a novel deblurring MIM approach that incorporates deblurring into the proxy task during MIM pretraining. The deblurring MIM can be seamless integrated with MIM approaches (such as [MAE](https://openaccess.thecvf.com/content/CVPR2022/papers/He_Masked_Autoencoders_Are_Scalable_Vision_Learners_CVPR_2022_paper.pdf), [ConvMAE](https://arxiv.org/pdf/2205.03892.pdf)).
-- We utilize 280,000 thyroid images for the pretraining.
-- Support downstram classification and segmentation tasks.
+Compared with the initial version which propose a novel deblurring MAE for ultrasound image recognition, this repository is an extension which has the following enhancements:
+- We extend the deblurring pretraining from only MAE to two MIM-based approaches ([MAE](https://openaccess.thecvf.com/content/CVPR2022/papers/He_Masked_Autoencoders_Are_Scalable_Vision_Learners_CVPR_2022_paper.pdf) and [ConvMAE](https://arxiv.org/pdf/2205.03892.pdf) ).
+- We increase the number of thyroid ultrasound images for pretraining from 10,675 to 280,000.
+- We extend the downstram task from only classification to classification and segmentation.
 
-*Note that in the initial version we only integrated our deblurring with MAE and only support classification task. The corresponding extended paper was still working in progress and we will release it soon.*
+*The corresponding extended paper was still working in progress, and we will release it soon.*
 
 
 ### Method
 ![tenser](figure/main.drawio.png)
 
 ### Pre-trained checkpoints
-The pre-trained models including our proposed deblurring (Deblurring MAE and Deblurring ConvMAE), as well as the vanilla MAE and ConvMAE. All models are pretrained with thyroid ultrasound images.
+The pre-trained models including our proposed deblurring (Deblurring MAE and Deblurring ConvMAE), as well as the vanilla MAE and ConvMAE. All models are pretrained with 280,000 thyroid ultrasound images.
 The following table provides the pre-trained checkpoints:
 
 <table><tbody>
@@ -27,17 +27,51 @@ The following table provides the pre-trained checkpoints:
 <th valign="bottom">ConvMAE(Base)</th>
 
 <!-- TABLE BODY -->
-<tr><td align="left">Deblurring</td>
-<td align="center"><a href="https://drive.google.com/file/d/1cOmi7OaqPSMrds7gVZfzTrv8ftEWIH_u/view?usp=drive_link">download</a></td>
-<td align="center"><a href="https://drive.google.com/file/d/19PdQpkOOEAi-4aJvVnwB2JTyP-KKa5pp/view?usp=drive_link">download</a></td>
-</tr>
 <tr><td align="left">Vanilla</td>
 <td align="center"><a href="https://drive.google.com/file/d/1bXcf6A0kQccnpe3Tk2l0-xWl5HSe4fJ2/view?usp=drive_link">download</a></td>
 <td align="center"><a href="https://drive.google.com/file/d/1Tv9yjWM9sqxmd60GEIT3WwnT3CHt0kjg/view?usp=drive_link">download</a></td>
 </tr>
+<tr><td align="left">Deblurring</td>
+<td align="center"><a href="https://drive.google.com/file/d/1cOmi7OaqPSMrds7gVZfzTrv8ftEWIH_u/view?usp=drive_link">download</a></td>
+<td align="center"><a href="https://drive.google.com/file/d/19PdQpkOOEAi-4aJvVnwB2JTyP-KKa5pp/view?usp=drive_link">download</a></td>
+</tr>
 </tbody></table>
 
+### Fine-tuning Results
+We provide the fine-tuning segmentation results on publicly available [TN3K dataset](https://drive.google.com/file/d/1reHyY5eTZ5uePXMVMzFOq5j3eFOSp50F/view?usp=sharing):
 
+<table><tbody>
+<!-- START TABLE -->
+<!-- TABLE HEADER -->
+<th valign="bottom">Method</th>
+<th valign="bottom">Architecture</th>
+<th valign="bottom">Pretraining</th>
+<th valign="bottom">IoU (%)</th>
+<tr>
+<td><a href="https://www.sciencedirect.com/science/article/pii/S0010482522010976?casa_token=_EBAHS8oNlEAAAAA:WmsXBHQAPKT9-ou7Exth9mw3vJvH5HfVe6PP0UC4V5l-5QF_gU37qEsBOKj73wap1F2v3PL5uQ">TRFE+</a></td>
+<td>-</td>
+<td>-</td>
+<td>71.38</td>
+</tr>
+<tr>
+<td>ConvMAE</td>
+<td>ConViT-B</td>
+<td>ImageNet</td>
+<td>72.98</td>
+</tr>
+<tr>
+<td>ConvMAE</td>
+<td>ConViT-B</td>
+<td>US280K</td>
+<td>75.18</td>
+</tr>
+<tr>
+<td>Deblurring ConvMAE</td>
+<td>ConViT-B</td>
+<td>US280K</td>
+<td>77.31</td>
+</tr>
+</tbody></table>
 
 ### installation
 - Clone this repo:

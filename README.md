@@ -55,20 +55,20 @@ We provide the fine-tuning segmentation results on publicly available [TN3K data
 </tr>
 <tr>
 <td>ConvMAE</td>
-<td>ConViT-B</td>
+<td>UPerNet(ConViT-B)</td>
 <td>ImageNet</td>
 <td>72.98</td>
 </tr>
 <tr>
 <td>ConvMAE</td>
-<td>ConViT-B</td>
-<td>US280K</td>
+<td>UPerNet(ConViT-B)</td>
+<td>US-280K</td>
 <td>75.18</td>
 </tr>
 <tr>
 <td>Deblurring ConvMAE</td>
-<td>ConViT-B</td>
-<td>US280K</td>
+<td>UPerNet(ConViT-B)</td>
+<td>US-280K</td>
 <td>77.31</td>
 </tr>
 </tbody></table>

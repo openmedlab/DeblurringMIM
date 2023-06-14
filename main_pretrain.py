@@ -197,7 +197,8 @@ def main(args):
         model = models_convmae.__dict__[args.model](norm_pix_loss=args.norm_pix_loss)
     elif args.model in ['dmae_vit_base_patch16', "dmae_vit_large_patch16", "dmae_vit_huge_patch16" ]:
         model = models_dmae.__dict__[args.model](norm_pix_loss=args.norm_pix_loss)
-    elif args.model in ['convdmae_convvit_base_patch16', "convdmae_convvit_large_patch16", "convdmae_convvit_huge_patch16" ]:
+    elif args.model in ['dconvmae_convvit_base_patch16', "dconvmae_convvit_large_patch16",
+                        "dconvmae_convvit_huge_patch16" ]:
         model = models_dconvmae.__dict__[args.model](norm_pix_loss=args.norm_pix_loss)
     model.to(device)
 

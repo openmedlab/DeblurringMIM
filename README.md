@@ -205,7 +205,7 @@ dataset
 Note that for fine-tuning the deblurring MIM approaches, you should also need to apply image blurring operation on the original images.
 
 #### Training for classification
-To finetune deblurring MAE or vanilla MAE training for classification, run the following on single GPU:
+To finetune deblurring or vanilla MAE training for classification, run the following on single GPU:
 ```bash
 python main_finetune.py --seed 0 \
     --data_path  /path/to/dataset/  \
@@ -213,9 +213,9 @@ python main_finetune.py --seed 0 \
     --model vit_base_patch16 --finetune ${PRETRAIN_CHKPT} \
     --blr 1e-4 --batch_size 256
 ```
-You can change the model parameter for deblurring ConvMAE or  vanilla ConvMAE.
+You can change the model parameter to convvit_base_patch16 for deblurring or vanilla ConvMAE. Note that for deblurring models, you should use blurred images as input dataset.
 #### Evaluation for classification
-To evaluate the fine-tuned deblurring MAE or vanilla MAE for classification, run the following on single GPU:
+To evaluate the fine-tuned deblurring or vanilla MAE for classification, run the following on single GPU:
 ```bash
 python main_finetune.py --batch_size 256  \
 --model vit_base_patch16 \

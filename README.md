@@ -2,7 +2,7 @@
 ### Deblurring Masked Image Modelling is Better Recipe for Ultrasound Image Analysis
 
 ### Introduction
-Our initial paper is presented in [Deblurring Masked Autoencoder is Better Recipe for Ultrasound Image Recognition](https://arxiv.org/pdf/2306.08249.pdf).
+Our initial paper is presented in [Deblurring Masked Autoencoder is Better Recipe for Ultrasound Image Recognition](https://arxiv.org/pdf/2306.08249.pdf) in MICCAI 2023.
 
 Compared with the initial version which propose a novel deblurring MAE for ultrasound image recognition, this repository is an extension which has the following enhancements:
 - We extended the deblurring idea from only MAE to two MIM-based approaches ([MAE](https://openaccess.thecvf.com/content/CVPR2022/papers/He_Masked_Autoencoders_Are_Scalable_Vision_Learners_CVPR_2022_paper.pdf) and [ConvMAE](https://arxiv.org/pdf/2205.03892.pdf) ).
@@ -270,3 +270,14 @@ The pretraining and finetuning of our project are based on [MAE](https://github.
 ### License
 
 This project is under the CC-BY-NC 4.0 license. See [LICENSE](LICENSE) for details.
+
+### Citation
+
+```bash
+@article{kang2023deblurring,
+  title={Deblurring Masked Autoencoder is Better Recipe for Ultrasound Image Recognition},
+  author={Kang, Qingbo and Gao, Jun and Li, Kang and Lao, Qicheng},
+  journal={arXiv preprint arXiv:2306.08249},
+  year={2023}
+}
+```

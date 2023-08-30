@@ -44,34 +44,29 @@ We provide the fine-tuning segmentation results on publicly available [TN3K data
 <!-- START TABLE -->
 <!-- TABLE HEADER -->
 <th valign="bottom">Method</th>
-<th valign="bottom">Architecture</th>
+<th valign="bottom">Segmentation Model</th>
 <th valign="bottom">Pretraining</th>
 <th valign="bottom">IoU (%)</th>
 <tr>
+<td>-</td>
 <td><a href="https://www.sciencedirect.com/science/article/pii/S0010482522010976?casa_token=_EBAHS8oNlEAAAAA:WmsXBHQAPKT9-ou7Exth9mw3vJvH5HfVe6PP0UC4V5l-5QF_gU37qEsBOKj73wap1F2v3PL5uQ">TRFE+</a></td>
 <td>-</td>
-<td>-</td>
-<td>71.38</td>
+<td>74.47</td>
 </tr>
 <tr>
 <td>ConvMAE</td>
-<td>UPerNet(ConViT-B)</td>
-<td>ImageNet</td>
-<td>72.98</td>
+<td>U-Net++(ConViT-B)</td>
+<td>US-Esaote-280K</td>
+<td>74.40</td>
 </tr>
 <tr>
-<td>ConvMAE</td>
-<td>UPerNet(ConViT-B)</td>
-<td>US-280K</td>
-<td>75.18</td>
-</tr>
-<tr>
-<td>Deblurring ConvMAE</td>
-<td>UPerNet(ConViT-B)</td>
-<td>US-280K</td>
-<td>77.31</td>
+<td><a href="https://drive.google.com/file/d/1iN9lNFOiYD_Nu8GsmRTle4wq5-lZ6ycq/view?usp=drive_link">Deblurring ConvMAE</td>
+<td>U-Net++(ConViT-B)</td>
+<td>US-Esaote-280K</td>
+<td>74.96</td>
 </tr>
 </tbody></table>
+
 
 ### installation
 - Clone this repo:

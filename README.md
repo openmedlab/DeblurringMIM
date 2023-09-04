@@ -281,7 +281,7 @@ Average HD: 14.239968
 ```
 
 ### Acknowledgement
-The pretraining and finetuning of our project are based on [MAE](https://github.com/facebookresearch/mae) and [ConvMAE](https://github.com/Alpha-VL/ConvMAE). The segmentation part are based on [segmentation_models.pytorch](https://github.com/qubvel/segmentation_models.pytorch). Thanks for their wonderful work.
+The pretraining and finetuning of our project are based on [MAE](https://github.com/facebookresearch/mae) and [ConvMAE](https://github.com/Alpha-VL/ConvMAE). The segmentation part is based on [segmentation_models.pytorch](https://github.com/qubvel/segmentation_models.pytorch). Thanks for their wonderful work.
 
 ### License
 

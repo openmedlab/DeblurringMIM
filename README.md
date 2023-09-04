@@ -220,47 +220,68 @@ python main_finetune.py --batch_size 256  \
 ```
 
 ### Fine-tuning for segmentation
-Please follow the [segmentation guide of ConvMAE](https://github.com/Alpha-VL/ConvMAE/blob/main/SEG/SEGMENTATION.md) to configure the environment.
 
 #### Data preparation
-Please follow the guide in [mmseg](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md) to prepare the segmentation dataset. Note that for fine-tuning the deblurring MIM approaches, you should also apply image blurring operation on the original images.
+Preparing the segmentation dataset in this format:
+```tree data
+dataset
+  ├── images_gaussian
+  │   ├── train
+  │   │   ├── 0000.png
+  │   │   ├── 0001.png
+  │   │   └── ...
+  │   ├── val
+  │   │   ├── 0002.png
+  │   │   ├── 0003.png
+  │   │   └── ...
+  │   └── test
+  │       ├── 0004.png
+  │       ├── 0005.png
+  │       └── ...
+  └── masks
+      ├── train
+      │   ├── 0000.png
+      │   ├── 0001.png
+      │   └── ...
+      ├── val
+      │   ├── 0002.png
+      │   ├── 0003.png
+      │   └── ...
+      └── test
+          ├── 0004.png
+          ├── 0005.png
+          └── ...
+
+```
+Note that the ```images_gaussian``` folder contains gaussian blurred images. We use 255 for foreground pixels in masks.
 
 #### Training for segmentation
 Download the pretrained deblurring ConvMAE model [here](https://drive.google.com/file/d/19PdQpkOOEAi-4aJvVnwB2JTyP-KKa5pp/view?usp=drive_link).
 
+Run ```SEG_UNET/train_smp.py```
 ```bash
-./tools/dist_train.sh <CONFIG_PATH> <NUM_GPUS>  --work-dir <SAVE_PATH> --options model.pretrained=<PRETRAINED_MODEL_PATH>
+python SEG_UNET/train_smp.py --encoder_weights /path/to/pretrained/weights/ --datapath /path/to/dataset/ --output_dir /path/to/save/results/
 ```
 
-For example:
-```bash
-./tools/dist_train.sh \
-    configs/de_convmae/upernet_de_convmae_us280k_base_gaussian_800_512_tn3k.py 8 \
-    --work-dir /path/to/save \
-    --options model.pretrained=/path/to/pretrained/weights
-```
 #### Evaluation for segmentation
 ```
 ./tools/dist_test.sh  <CONFIG_PATH> <CHECKPOINT_PATH> <NUM_GPUS> --eval mIoU
 ```
-We provide the fine-tuned checkpoint [here]() tuned on the [TN3K dataset](https://drive.google.com/file/d/1reHyY5eTZ5uePXMVMzFOq5j3eFOSp50F/view?usp=sharing).
+We provide the fine-tuned checkpoint [here](https://drive.google.com/file/d/11yvXHG06yz01hj0fI5vLxXOOJ-dDQ7YH/view?usp=drive_link) tuned on the [TN3K dataset](https://drive.google.com/file/d/1reHyY5eTZ5uePXMVMzFOq5j3eFOSp50F/view?usp=sharing).
 Run 
 ```
-./tools/dist_test.sh configs/de_convmae/upernet_de_convmae_us280k_base_gaussian_800_512_tn3k.py /path/to/finetuned/weights 8 --eval mIoU
+python SEG_UNET/predict.py --weight_path /path/to/seg/checkpoint/ --save_dir /path/to/save/predictions/ --datapath /path/to/dataset/
 ```
 
 This should give
 ```
-+------------+-------+-------+
-|   Class    |  IoU  |  Acc  |
-+------------+-------+-------+
-| background | 96.29 | 98.32 |
-|   nodule   | 77.31 | 85.94 |
-+------------+-------+-------+
+Average DICE: [0.8409123]
+Average IoU: [0.7581287]
+Average HD: 14.239968
 ```
 
 ### Acknowledgement
-The pretraining and finetuning of our project are based on [MAE](https://github.com/facebookresearch/mae) and [ConvMAE](https://github.com/Alpha-VL/ConvMAE). The segmentation part are based on [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) and [mae_segmentation](https://github.com/implus/mae_segmentation). Thanks for their wonderful work.
+The pretraining and finetuning of our project are based on [MAE](https://github.com/facebookresearch/mae) and [ConvMAE](https://github.com/Alpha-VL/ConvMAE). The segmentation part are based on [segmentation_models.pytorch](https://github.com/qubvel/segmentation_models.pytorch). Thanks for their wonderful work.
 
 ### License
 

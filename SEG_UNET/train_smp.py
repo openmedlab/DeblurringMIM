@@ -37,12 +37,12 @@ def set_global_random_seed(seed):
 
 def get_args_parser():
     parser = argparse.ArgumentParser('Segmentation', add_help=False)
-    parser.add_argument('--batch_size', default=4, type=int,
+    parser.add_argument('--batch_size', default=16, type=int,
                         help='Batch size')
     # unet, unetpp
-    parser.add_argument('--model', default='unet', type=str,
+    parser.add_argument('--model', default='unetpp', type=str,
                         help='segmentation model (unet, unetpp)')
-    parser.add_argument('--encoder', default='convmae', type=str,
+    parser.add_argument('--encoder', default='dconvmae', type=str,
                         help='encoder (convmae or dconvmae)')
     parser.add_argument('--encoder_weights', default='/qingbo/ConvMAE-main/pretrain_zk/0425_dconvmae_base_gaussian/checkpoint-799.pth', type=str,
                         help='encoder weights')

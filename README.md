@@ -264,9 +264,6 @@ python SEG_UNET/train_smp.py --encoder_weights /path/to/pretrained/weights/ --da
 ```
 
 #### Evaluation for segmentation
-```
-./tools/dist_test.sh  <CONFIG_PATH> <CHECKPOINT_PATH> <NUM_GPUS> --eval mIoU
-```
 We provide the fine-tuned checkpoint [here](https://drive.google.com/file/d/11yvXHG06yz01hj0fI5vLxXOOJ-dDQ7YH/view?usp=drive_link) tuned on the [TN3K dataset](https://drive.google.com/file/d/1reHyY5eTZ5uePXMVMzFOq5j3eFOSp50F/view?usp=sharing).
 Run 
 ```

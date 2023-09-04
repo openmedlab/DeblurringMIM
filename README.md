@@ -271,11 +271,16 @@ python SEG_UNET/predict.py --weight_path /path/to/seg/checkpoint/ --save_dir /pa
 ```
 
 This should give
-```
-Average DICE: [0.8409123]
-Average IoU: [0.7581287]
-Average HD: 14.239968
-```
+
+[comment]: <> (```)
+
+[comment]: <> (Average DICE: [0.84970915])
+
+[comment]: <> (Average IoU: [0.7692367])
+
+[comment]: <> (Average HD: 12.860182)
+
+[comment]: <> (```)
 
 ### Acknowledgement
 The pretraining and finetuning of our project are based on [MAE](https://github.com/facebookresearch/mae) and [ConvMAE](https://github.com/Alpha-VL/ConvMAE). The segmentation part is based on [segmentation_models.pytorch](https://github.com/qubvel/segmentation_models.pytorch). Thanks for their wonderful work.

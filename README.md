@@ -264,7 +264,7 @@ python SEG_UNET/train_smp.py --encoder_weights /path/to/pretrained/weights/ --da
 ```
 
 #### Evaluation for segmentation
-We provide the fine-tuned checkpoint [here](https://drive.google.com/file/d/11yvXHG06yz01hj0fI5vLxXOOJ-dDQ7YH/view?usp=drive_link) tuned on the [TN3K dataset](https://drive.google.com/file/d/1reHyY5eTZ5uePXMVMzFOq5j3eFOSp50F/view?usp=sharing).
+We provide the fine-tuned checkpoint [here](https://drive.google.com/file/d/1sV8mvYQ9mzdMzySOYTgvtndNJj54Yolp/view?usp=drive_link) tuned on the [TN3K dataset](https://drive.google.com/file/d/1reHyY5eTZ5uePXMVMzFOq5j3eFOSp50F/view?usp=sharing).
 Run 
 ```
 python SEG_UNET/predict.py --weight_path /path/to/seg/checkpoint/ --save_dir /path/to/save/predictions/ --datapath /path/to/dataset/

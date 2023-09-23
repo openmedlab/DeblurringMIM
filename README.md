@@ -7,7 +7,7 @@ Our initial paper is presented in [Deblurring Masked Autoencoder is Better Recip
 Compared with the initial version which propose a novel deblurring MAE for ultrasound image recognition, this repository is an extension which has the following enhancements:
 - We extended the deblurring idea from only MAE to two MIM-based approaches ([MAE](https://openaccess.thecvf.com/content/CVPR2022/papers/He_Masked_Autoencoders_Are_Scalable_Vision_Learners_CVPR_2022_paper.pdf) and [ConvMAE](https://arxiv.org/pdf/2205.03892.pdf) ).
 - We increased the number of thyroid ultrasound images for pretraining from 10,675 to 280,000.
-- We extended the downstram task from only classification to classification and segmentation.
+- We extended the downstream task from only classification to classification and segmentation.
 
 *The corresponding extended paper is still working in progress, we will release it soon.*
 
@@ -97,7 +97,7 @@ pip install timm==0.3.2
 ### Pretraining
 
 #### Data preparation
-Prepareing the original dataset follow this format:
+Preparing the original dataset follow this format:
 ```tree data
 dataset_orig
   ├── train
